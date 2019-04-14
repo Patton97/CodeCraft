@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=CodeCraft
+comment1.params=
+comment1.target=CodeCraft()
+comment2.params=
+comment2.target=void\ initUI()
+comment3.params=
+comment3.target=void\ initTimer()
+comment4.params=ae
+comment4.target=void\ actionPerformed(java.awt.event.ActionEvent)
+comment5.params=args
+comment5.target=void\ main(java.lang.String[])
+comment6.params=
+comment6.target=void\ run()
+comment7.params=pane
+comment7.target=void\ addComponentsToPane(java.awt.Container)
+comment8.params=pane
+comment8.target=void\ initLevel(java.awt.Container)
+comment9.params=ae
+comment9.target=void\ actionPerformed(java.awt.event.ActionEvent)
+comment9.text=\r\n\ Handles\ button\ presses.\r\n\ There\ should\ be\ a\ better\ way\ of\ doing\ this,\ but\ unfortunately\ Java\ doesn't\r\n\ seem\ to\ like\ declaring\ multiple\ action\ listeners.\ \r\n\ \r\n\ @param\ ae\ ActionEvent\ which\ caused\ this\ to\ be\ called.\r\n
+numComments=10

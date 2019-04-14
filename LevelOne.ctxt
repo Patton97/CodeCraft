@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=LevelOne
+comment0.text=\r\n\ LEVEL\ ONE\:\ Let's\ Get\ Moving\!\r\n\ \r\n\ Northumbria\ University's\ Mars\ rover\ has\ stopped\ working.\r\n\ It\ is\ your\ job\ to\ take\ over\ the\ controls,\ and\ get\ it\ moving\ again.\r\n\ \r\n\ Step\ 1\:\ To\ move\ the\ rover,\ type\ moveRight()\ into\ the\ main\ function\ below.\r\n\ Step\ 2\:\ Try\ out\ all\ 4\ directions,\ you\ can\ move\ up,\ down,\ right\ and\ left.\r\n
+comment1.params=
+comment1.target=void\ main()
+numComments=2

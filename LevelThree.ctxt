@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=LevelThree
+comment0.text=\r\n\ LEVEL\ THREE\:\ Escape\ the\ Cave\!\r\n\ \r\n\ NU-Rover\ has\ got\ itself\ stuck\ in\ a\ cave,\ help\ it\ escape.\r\n\ \r\n\ Step\ 1\:\ Take\ a\ look\ at\ the\ level\ first,\ to\ see\ where\ you\ need\ to\ go\r\n\ Step\ 2\:\ Program\ the\ rover\ below\ to\ drive\ out\ of\ the\ cave\r\n\ \r\n\ That\ was\ probably\ boring,\ and\ took\ a\ while\ to\ code.\ \r\n\ Good\ news\!\ There's\ a\ neater,\ simpler\ way\ to\ program\ these\r\n\ repetitive\ tasks\:\ "for\ loops".\ If\ you've\ yet\ to\ learn\ about\r\n\ for\ loops,\ either\ ask\ your\ professor,\ or\ take\ to\ Google\!\r\n\ \r\n\ Step\ 3\:\ Change\ your\ code\ to\ use\ for\ loops\ instead\r\n
+comment1.params=
+comment1.target=void\ main()
+numComments=2

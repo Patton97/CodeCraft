@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Level
+comment1.params=
+comment1.target=Level\ getLevel()
+comment1.text=\r\n\ Factory\ method\ to\ get\ the\ canvas\ singleton\ object.\r\n
+comment2.params=
+comment2.target=Level()
+comment3.params=g
+comment3.target=void\ doDrawing(java.awt.Graphics)
+comment4.params=newFrame
+comment4.target=void\ addFrame(java.awt.Point)
+comment5.params=
+comment5.target=void\ updateRover()
+comment6.params=fileToLoad
+comment6.target=void\ loadTilemap(java.io.File)
+comment6.text=\r\n\ Loads\ tilemap\ for\ level\ from\ .txt\ file\r\n\ \r\n\ Scans\ each\ tile\ in\ a\ row,\ per\ row\ (left-right,\ top-bottom)\r\n\ This\ should\ not\ need\ any\ future\ modification\ if\ the\ TILE_SIZE\ changes,\r\n\ nor\ if\ new\ tile\ types\ or\ level\ are\ added.\ This\ would\ only\ need\ to\ be\ \r\n\ modified\ should\ the\ level\ file\ format\ change.\r\n\ \r\n\ @param\ fileToLoad\ The\ level\ file\ containing\ the\ tilemap\ data\ to\ load\r\n
+comment7.params=level
+comment7.target=void\ loadLevel(int)
+comment7.text=\r\n\ Loads\ the\ new\ level,\ from\ button\ press\r\n\ \r\n\ This\ is\ not\ as\ dynamic\ as\ I'd\ like\ it\ to\ be,\ so\ any\ future\r\n\ added\ levels\ will\ need\ to\ be\ hardcoded\ below.\ For\ 10-15\ levels,\r\n\ this\ is\ fine,\ but\ beyond\ that\ it\ could\ get\ messy.\r\n\ \r\n\ @param\ level\ \r\n
+comment8.params=g
+comment8.target=void\ paintComponent(java.awt.Graphics)
+numComments=9

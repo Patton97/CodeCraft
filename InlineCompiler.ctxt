@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=InlineCompiler
+comment1.params=newcode
+comment1.target=void\ main(java.lang.StringBuilder)
+comment2.params=fileToEdit
+comment2.target=java.lang.StringBuilder\ SaveOldCode(java.io.File)
+numComments=3
