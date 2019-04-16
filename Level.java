@@ -96,13 +96,13 @@ public class Level extends JPanel {
         //  background for tiles with transparent areas
         Graphics2D surfaceG2D = (Graphics2D) g.create();
         surfaceG2D.setPaint(surfacetp);
-        /*for(int i = 0; i < MAX_ROWS; i++)
+        for(int i = 0; i < MAX_ROWS; i++)
         {
             for(int j = 0; j < MAX_COLUMNS; j++)
             {
                 surfaceG2D.fillRect(i*TILE_SIZE, j*TILE_SIZE, TILE_SIZE, TILE_SIZE);
             }
-        }*/
+        }
         
         //Singular generic G2D is used for tilemap data
         Graphics2D G2D = (Graphics2D) g.create();
@@ -250,41 +250,24 @@ public class Level extends JPanel {
     }
     
     /**
-     * Loads the new level, from button press
+     * Loads the new level, from button press. 
      * 
-     * This is not as dynamic as I'd like it to be, so any future
-     * added levels will need to be hardcoded below. For 10-15 levels,
-     * this is fine, but beyond that it could get messy.
+     * Method is separated from loadTilemap() to allow future, intermediate 
+     * functionality to be added without issue
      * 
      * @param level 
      */    
     public void loadLevel(int level)
     {
-        switch(level)
-        {
-            case 0:
-                loadTilemap(new File("levelzero.txt"));
-                break;
-            case 1:
-                loadTilemap(new File("levelone.txt"));
-                break;
-            case 2:
-                loadTilemap(new File("leveltwo.txt"));
-                break;
-            case 3:
-                loadTilemap(new File("levelthree.txt"));
-                break;
-            case 4:
-                loadTilemap(new File("levelfour.txt"));
-                break;
-            case 5:
-                loadTilemap(new File("levelfive.txt"));
-                break;
-            default:
-                System.out.println("Loading failed: Invalid level");
-                break;
-        }
+        loadTilemap(new File("Levels/level" + level + ".txt"));
     }
+    
+    /**
+     * Overrides the default Graphics2D paintComponent() method, to ensure
+     * the custom doDrawing() method is always invoked after superclass method
+     * 
+     * @param g Graphics reference
+     */
     
     @Override
     public void paintComponent(Graphics g) 

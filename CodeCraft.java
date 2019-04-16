@@ -88,8 +88,9 @@ public class CodeCraft extends JFrame implements ActionListener{
         JPanel right = new JPanel(new GridBagLayout());
         right.setLayout(new GridLayout(NUM_LEVELS,1));
 
-        //Add buttons for all levels, starting with level zero
-        for(int i = 0; i < NUM_LEVELS; i++)
+        //Add buttons for all levels, starting with level one
+        // level zero is reserved for testing/demos
+        for(int i = 1; i < NUM_LEVELS; i++)
         {
             levelButtons[i] = new JButton("Level " + i); //Add button to array
             levelButtons[i].addActionListener(this);

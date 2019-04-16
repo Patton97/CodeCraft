@@ -31,7 +31,7 @@ public class CodeCraft extends JFrame implements ActionListener{
     private void initUI(){
         //Create JFrame
         super.setTitle("CodeCraft");
-        super.setSize(1200, 900);
+        super.setSize(1280, 720);
         setLocationRelativeTo(null);        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addComponentsToPane(super.getContentPane());
@@ -88,8 +88,9 @@ public class CodeCraft extends JFrame implements ActionListener{
         JPanel right = new JPanel(new GridBagLayout());
         right.setLayout(new GridLayout(NUM_LEVELS,1));
 
-        //Add buttons for all levels, starting with level zero
-        for(int i = 0; i < NUM_LEVELS; i++)
+        //Add buttons for all levels, starting with level one
+        
+        for(int i = 1; i < NUM_LEVELS; i++)
         {
             levelButtons[i] = new JButton("Level " + i); //Add button to array
             levelButtons[i].addActionListener(this);
