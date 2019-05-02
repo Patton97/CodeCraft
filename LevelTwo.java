@@ -1,24 +1,27 @@
-/**
- * LEVEL TWO: Hit the Target
+/*** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ***
+ *** * * * * * * * * LEVEL TWO: Safety First * * * * * * * * * * * * * * * * ***
+ *** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * ***
+ *                                                                             *
+ * The rover comes equipped with a scanner, to help you avoid                  *
+ * crashing into rocks. To scan, we can use rightIsSafe() to detect if the     *
+ * tile to the right is safe to move into.                                     *
+ *                                                                             *
+ * Step 1: Using an IF statement, try moving UP, using this safety check.      *
+ *                                                                             *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ *                                                                             *
+ * You probably didn't move, that's good, you didn't crash!                    *
  * 
- * Now that you've got hang of the controls, let's see if
- * you can guide the rover to the target location.
- * 
- * Step 1: Take a look at the level first, to see where you need to go
- * Step 2: Program the rover below to drive onto the target
- */
+ * What if we did want to move? For example, if there's a rock                 *
+ * to our right, we might want to move up, and try to go around it.            *
+ *                                                                             *
+ * Step 2: Change your program to drive around the rock, using IF statements.  *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
 public class LevelTwo extends Rover
 {   
     public void main()
     {
-        moveRight();
-        moveRight();
-        moveRight();
-        moveRight();
-        moveUp();
-        moveUp();
-        moveUp();
-        moveUp();
-        moveUp();
+        
     }
 }

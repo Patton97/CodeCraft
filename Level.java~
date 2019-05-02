@@ -17,39 +17,23 @@ import java.awt.Point;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-//ROTATION MEMORY:
-//roverG2D.rotate(Math.toRadians(90), rover.x + rover.width/2, rover.y + rover.height/2);        
-public class Level extends JPanel {
-    //Tile images
-    private BufferedImage surfaceImg;
-    private BufferedImage roverImg;
-    private BufferedImage rockImg;
-    private BufferedImage mineralImg;
-    private BufferedImage targetImg;
-    private BufferedImage warningImg;
-    //Tile paints - TODO: Create dynamically?
-    private TexturePaint  surfacetp;
-    private TexturePaint  rovertp;
-    private TexturePaint  rocktp;
-    private TexturePaint  mineraltp;
-    private TexturePaint  targettp;
-    private TexturePaint  warningtp;
-    
-    public  static int MAX_ROWS    = 15;
-    public  static int MAX_COLUMNS = 15;    
+public class Level extends JPanel {    
+    private static int MAX_ROWS    = 15;
+    private static int MAX_COLUMNS = 15;    
     private static int TILE_SIZE   = 50;    
     
-    Rectangle tile = new Rectangle(0,0,TILE_SIZE,TILE_SIZE);  
+    private Rectangle tile = new Rectangle(0,0,TILE_SIZE,TILE_SIZE);  
 
     private int roverX = 0;
     private int roverY = 0;
     
-    private int iFrame;
+    private int iFrame = 0;
     
     private int[][] tilemap = new int[MAX_ROWS][MAX_COLUMNS];
     
     private Rover rover = Rover.getRover();
     
+    private ArrayList<TexturePaint> texturePaints = new ArrayList<TexturePaint>();
     private ArrayList<Point> frames = new ArrayList<Point>();
     
     private static Level levelSingleton;
@@ -65,37 +49,42 @@ public class Level extends JPanel {
         return levelSingleton;
     }
     
+    /**
+     * Level Constructor initialises the texture paints into the arraylist
+     */
     public Level()
     {
         //Initialise Tile Types
         try 
         {
-            //Store Buffered Images
-            surfaceImg = ImageIO.read(new File("surface.jpg"));
-            roverImg   = ImageIO.read(new File("rover.png"));
-            rockImg    = ImageIO.read(new File("rock.png"));
-            mineralImg = ImageIO.read(new File("mineral.png"));
-            targetImg  = ImageIO.read(new File("target.png"));
-            warningImg = ImageIO.read(new File("warning.png"));
-            //Create Texture Paints
-            surfacetp  = new TexturePaint(surfaceImg, tile);                 
-            rovertp    = new TexturePaint(roverImg,   tile);
-            rocktp     = new TexturePaint(rockImg,    tile);        
-            mineraltp  = new TexturePaint(mineralImg, tile);
-            targettp   = new TexturePaint(targetImg,  tile);
-            warningtp  = new TexturePaint(warningImg, tile);
-        } catch (IOException ioe) {
+            //Dynamically assign texture paints
+            texturePaints.add(new TexturePaint(ImageIO.read(new File("Images/surface.jpg")), tile));
+            texturePaints.add(new TexturePaint(ImageIO.read(new File("Images/rover.png")), tile));
+            texturePaints.add(new TexturePaint(ImageIO.read(new File("Images/rock.png")), tile));
+            texturePaints.add(new TexturePaint(ImageIO.read(new File("Images/mineral.png")), tile));
+            texturePaints.add(new TexturePaint(ImageIO.read(new File("Images/target.png")), tile));
+            texturePaints.add(new TexturePaint(ImageIO.read(new File("Images/warning.png")), tile));
+        } catch(FileNotFoundException fnfe) {
+            System.out.println("ERROR: Invalid texture paint, file not found" + fnfe);
+        }
+        catch (IOException ioe) {
             ioe.printStackTrace();
         }
     }
     
+    /**
+     * Draws the level to the canvas, may be recalled periodically.
+     * Usually invoked via the overriden paintComponent(Graphics g) method
+     * 
+     * @param g Reference to the Graphics element
+     */    
     private void doDrawing(Graphics g)    
     {   
         //Surface specific G2D is used to paint entire 
         //  grid regardless of tilemap data to provide 
         //  background for tiles with transparent areas
         Graphics2D surfaceG2D = (Graphics2D) g.create();
-        surfaceG2D.setPaint(surfacetp);
+        surfaceG2D.setPaint(texturePaints.get(0));
         for(int i = 0; i < MAX_ROWS; i++)
         {
             for(int j = 0; j < MAX_COLUMNS; j++)
@@ -112,32 +101,13 @@ public class Level extends JPanel {
         {
             for(int x = 0; x < MAX_COLUMNS; x++)
             {
-                //Switch out paint type
-                switch(tilemap[x][y])
+                //Select paint type
+                G2D.setPaint(texturePaints.get(tilemap[x][y]));
+                //If tile is rover, record position
+                if(tilemap[x][y] == 1)
                 {
-                    case 0: //Surface
-                        G2D.setPaint(surfacetp);
-                        break;
-                    case 1: //Rover
-                        G2D.setPaint(rovertp);
-                        roverX = x;
-                        roverY = y;
-                        break;
-                    case 2: //Rock
-                        G2D.setPaint(rocktp);
-                        break;
-                    case 3: //Mineral
-                        G2D.setPaint(mineraltp);
-                        break; 
-                    case 4: //Target
-                        G2D.setPaint(targettp);
-                        break;
-                    case 5: //Warning
-                        G2D.setPaint(warningtp);
-                        break;
-                    default://Safety - shouldn't happen
-                        G2D.setPaint(surfacetp);
-                        break;
+                    roverX = x;
+                    roverY = y;
                 }
                 //Apply paint to current tile
                 G2D.fillRect(x*TILE_SIZE, y*TILE_SIZE, //Coordinates
@@ -146,37 +116,72 @@ public class Level extends JPanel {
         }    
     }
     
+    /**
+     * Adds a new frame to the simulation framelist
+     * 
+     * @param newFrame The point data signifying the rover's movement within this frame
+     */
     public void addFrame(Point newFrame)
     {
         frames.add(newFrame);
     }
     
+    /**
+     * Returns the rover's current position
+     * 
+     * @return the rover's current position
+     */
+    public Point getRoverPos()
+    {
+        return new Point(roverX, roverY);
+    }
+    
+    /**
+     * Returns the tile type at the specified position
+     * 
+     * @param x x-coordinate
+     * @param y y-coordinate
+     * @return Tile type of specified tile as an integer
+     */
+    public int getTile(int x, int y)
+    {
+        return tilemap[x][y];
+    }
+    
+    /**
+     * Updates the rover's position within the tilemap, ready for the next frame
+     * Simulation is stopped if the rover has hit a rock or gone out of bounds
+     */    
     public void updateRover()
     {
+        //If reached the end of the simulation
         if(iFrame >= frames.size())
         {
             Rover.getRover().finished();
         }
-        else
+        //If rover is attempting to go outside the level boundary
+        else if (roverX + frames.get(iFrame).x >= MAX_COLUMNS //Too far right
+             ||  roverX + frames.get(iFrame).x < 0            //Too far left
+             ||  roverY + frames.get(iFrame).y >= MAX_ROWS    //Too far down
+             ||  roverY + frames.get(iFrame).y < 0)           //Too far up
         {
-            //Get new position
-            roverX += frames.get(iFrame).x;
-            roverY += frames.get(iFrame).y;
-            
+            tilemap[roverX][roverY] = 5; //Draw warning to current position
+            System.out.println("ERROR: Rover has lost connection to the sattelite!");
+            System.out.println("       Where are you?!");
+            Rover.getRover().finished();
+        }
+        else
+        {            
             //Update tilemap
             //First, remove current rover position
-            for(int y = 0; y < MAX_ROWS; y++)
-            {
-                for(int x = 0; x < MAX_COLUMNS; x++)
-                {
-                    if(tilemap[x][y] == 1)
-                    {
-                        tilemap[x][y] = 0;
-                    }
-                }
-            }
-            
-            //Check what exists on tile rover is moving into            
+            tilemap[roverX][roverY] = 0;
+                        
+            //Move rover into new position (logic layer)
+            roverX += frames.get(iFrame).x;
+            roverY += frames.get(iFrame).y;
+        
+            //Check what exists on tile rover is moving into   
+            //  If safe, move rover into new position (visual layer)
             switch(tilemap[roverX][roverY])
             {
                 case 0: //Surface
@@ -186,29 +191,48 @@ public class Level extends JPanel {
                     tilemap[roverX][roverY] = 1;
                     break;
                 case 2: //Rock
+                    tilemap[roverX][roverY] = 5; //Draw warning
                     System.out.println("CRASH DETECTED");
-                    tilemap[roverX][roverY] = 4; //Draw warning
+                    Rover.getRover().finished();
                     break;
                 case 3: //Mineral
+                    tilemap[roverX][roverY] = 5; //Draw warning
                     System.out.println("CRASH DETECTED");
-                    tilemap[roverX][roverY] = 4; //Draw warning
+                    Rover.getRover().finished();
                     break; 
                 case 4: //Target
-                    System.out.println("REACHED!");
                     tilemap[roverX][roverY] = 1;
+                    System.out.println("REACHED TARGET!");
                     break;
                 case 5: //Warning - Safety, shouldn't happen
-                    tilemap[roverX][roverY] = 4;
+                    tilemap[roverX][roverY] = 5;
+                    System.out.println("CRASH DETECTED");
+                    Rover.getRover().finished();
                     break;
                 default://Safety - shouldn't happen
                     tilemap[roverX][roverY] = 1;
                     break;
             }
-                
+            System.out.println("UPDATED: " + roverX + ", " + roverY); // DEBUG ONLY 
+                            
             iFrame++;  //inc framecounter
-            repaint(); //repaint level
         }        
-        System.out.println("UPDATED: " + roverX + ", " + roverY);
+        repaint(); //repaint level
+    }
+    
+    /**
+     * Loads the new level, from button press. 
+     * 
+     * Method is separated from loadTilemap() to allow future, intermediate 
+     * functionality to be added without issue
+     * 
+     * @param level 
+     */    
+    public void loadLevel(int level)
+    {
+        loadTilemap(new File("Levels/level" + level + ".txt"));
+        loadFrames(level);
+        Rover.getRover().reset();
     }
     
     /**
@@ -225,6 +249,7 @@ public class Level extends JPanel {
     public void loadTilemap(File fileToLoad) 
     {
         File levelFile = fileToLoad;
+        boolean roverPainted = false; //Used to check if rover is painted twice
         try
         {
             Scanner scanner = new Scanner(levelFile);
@@ -236,7 +261,26 @@ public class Level extends JPanel {
             {
                 for(int x = 0; x < Level.MAX_COLUMNS; x++)
                 {
-                    tilemap[x][y] = scanner.nextInt();
+                    if(scanner.hasNext())
+                    {
+                        tilemap[x][y] = scanner.nextInt();
+                        
+                        //Check if this tile paint was a rover
+                        if(tilemap[x][y] == 1)
+                        {
+                            //If rover has already been painted
+                            if(roverPainted)
+                            {
+                                System.out.println("WARNING: Multiple rovers exist. "
+                                                          + "Please fix level file. ");
+                            }
+                            roverPainted = true; //Set roverPainted to true
+                        }
+                    }
+                    else
+                    {
+                        tilemap[x][y] = 0;
+                    }
                 }
             }
             scanner.close();
@@ -247,26 +291,61 @@ public class Level extends JPanel {
             System.out.println("Invalid Level File");
             e.printStackTrace();
         }
-    }
+    }    
     
     /**
-     * Loads the new level, from button press. 
+     * Runs the user's code to generate a list of frames for the simulation
+     * Unfortunately hardcoded, anything beyond 5-10 levels might become messy
      * 
-     * Method is separated from loadTilemap() to allow future, intermediate 
-     * functionality to be added without issue
-     * 
-     * @param level 
-     */    
-    public void loadLevel(int level)
+     * @param level Level number, indicating which file to run
+     */
+    private void loadFrames(int level)
     {
-        loadTilemap(new File("Levels/level" + level + ".txt"));
+        //Clear out any past frames, reset iFrame counter
+        frames.clear();
+        iFrame = 0;
+        //Switch statement not possible due to redeclaration
+        // Refactor needed if no. of levels exceeds 10
+        if(level==0)
+        {
+            //Level zero does not allow user control, just a splashscreen
+        }
+        else if(level == 1)
+        {
+            LevelOne userCode = new LevelOne();
+            userCode.main();
+        }
+        else if(level == 2)
+        {
+            LevelTwo userCode = new LevelTwo();
+            userCode.main();
+        }
+        else if(level == 3)
+        {
+            LevelThree userCode = new LevelThree();
+            userCode.main();
+        }
+        else if(level == 4)
+        {
+            LevelFour userCode = new LevelFour();
+            userCode.main();
+        }
+        else if(level == 5)
+        {
+            LevelFive userCode = new LevelFive();
+            userCode.main();
+        }
+        else
+        {
+            System.out.println("Invalid level");
+        }
     }
     
     /**
      * Overrides the default Graphics2D paintComponent() method, to ensure
      * the custom doDrawing() method is always invoked after superclass method
      * 
-     * 
+     * @param g Graphics reference
      */
     
     @Override
@@ -274,5 +353,14 @@ public class Level extends JPanel {
     {
         super.paintComponent(g);
         doDrawing(g);
+    }
+    
+    /**
+     * Resets the level, ready for a new simulation.
+     */
+    public void reset(int level)
+    {
+        loadLevel(level);
+        Rover.getRover().reset();
     }
 }
